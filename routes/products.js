@@ -58,10 +58,8 @@ router.get('/:id', async function (req, res, next) {
   }
 });
 
-// KHỐI LỆNH ĐÃ ĐƯỢC FIX VÀ THÊM LOGIC TẠO INVENTORY
 router.post('/', async function (req, res, next) {
   try {
-    // Chặn lỗi slugify nếu Postman không gửi chữ 'title'
     if (!req.body.title) {
       return res.status(400).send({ message: "Thiếu trường 'title' trong Body JSON" });
     }
@@ -76,18 +74,16 @@ router.post('/', async function (req, res, next) {
       category: req.body.categoryId,
       images: req.body.images
     })
-    
-    // Lưu Product
+
     await newObj.save();
 
-    // Tự động tạo Inventory tương ứng
     const newInventory = new Inventory({
         product: newObj._id,
         stock: 0,
         reserved: 0,
         soldCount: 0
     });
-    // Lưu Inventory
+
     await newInventory.save();
 
     res.status(201).send({

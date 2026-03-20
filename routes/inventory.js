@@ -42,8 +42,6 @@ router.post('/add_stock', async function (req, res, next) {
 router.post('/remove_stock', async function (req, res, next) {
     try {
         const { product, quantity } = req.body;
-        
-        // Cần kiểm tra xem kho có đủ hàng để trừ không
         let inv = await Inventory.findOne({ product: product });
         if (inv.stock < quantity) {
             return res.status(400).send({ message: "Không đủ số lượng trong kho" });
